@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: webcolor
-        image: fabricioveronez/live-web-color:pink
+        image: kubedevio/web-color:blue
         ports:
         - containerPort: 80
 ---
