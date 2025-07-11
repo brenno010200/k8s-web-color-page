@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: webcolor-ingress
+  namespace: webcolor # <-- ASSUMIMOS O NAMESPACE 'default' SE NÃO HOUVER OUTRO ESPECIFICADO
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-prod # Aponta para o ClusterIssuer que já funciona
+    # A aplicação web-color expõe HTTP na porta 80, então não precisamos de backend-protocol HTTPS
+spec:
+  tls:
+  - hosts:
+    - webcolor.brennoprado.online # <-- SUBSTITUA PELO SEU SUBDOMÍNIO REAL
+    secretName: webcolor-tls-secret # Nome único para o Secret do certificado
+  rules:
+  - host: webcolor.brennoprado.online # <-- SUBSTITUA PELO SEU SUBDOMÍNIO REAL
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: webcolor # Nome do serviço da sua aplicação
+            port:
+              number: 80 # Porta do serviço da sua aplicação
